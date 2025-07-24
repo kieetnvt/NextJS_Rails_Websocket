@@ -1,0 +1,111 @@
+<div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+  <h2 class="text-xl font-semibold mb-4">Send a Message</h2>
+
+  <%= form_with model: @message, local: true, class: "space-y-4" do |form| %>
+    <% if @message&.errors&.any? %>
+      <div class="alert alert-error">
+        <h3 class="font-semibold">Please fix the following errors:</h3>
+        <ul class="mt-2">
+          <% @message.errors.full_messages.each do |message| %>
+            <li>• <%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div>
+      <%= form.label :username, class: "block text-sm font-semibold mb-2" %>
+      <%= form.text_field :username,
+          placeholder: "Enter your username",
+          class: "form-input",
+          maxlength: 50,
+          required: true %>
+    </div>
+
+    <div>
+      <%= form.label :content, "Message", class: "block text-sm font-semibold mb-2" %>
+      <%= form.text_area :content,
+          placeholder: "Type your message here...",
+          class: "form-input",
+          rows: 3,
+          maxlength: 1000,
+          required: true %>
+    </div>
+
+    <div>
+      <%= form.submit "Send Message", class: "btn btn-primary" %>
+      <%= link_to "Refresh", messages_path, class: "btn btn-secondary ml-2" %>
+    </div>
+  <% end %>
+</div>
+
+<div class="bg-white rounded-lg shadow-lg p-6">
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-xl font-semibold">Messages (<%= @messages.total_count %>)</h2>
+    <div class="text-sm text-gray-600">
+      Page <%= @messages.current_page %> of <%= @messages.total_pages %>
+    </div>
+  </div>
+
+  <% if @messages.any? %>
+    <div class="space-y-4">
+      <% @messages.each do |message| %>
+        <div class="message-card">
+          <div class="message-header">
+            <span class="username"><%= message.username %></span>
+            <span class="timestamp">
+              <%= time_ago_in_words(message.created_at) %> ago
+              (<%= message.created_at.strftime("%B %d, %Y at %I:%M %p") %>)
+            </span>
+          </div>
+          <div class="message-content">
+            <%= simple_format(h(message.content)) %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Simple Pagination -->
+    <% if @messages.total_pages > 1 %>
+      <div class="pagination">
+        <% if @messages.prev_page %>
+          <%= link_to "← Previous", messages_path(page: @messages.prev_page) %>
+        <% end %>
+
+        <% (1..@messages.total_pages).each do |page| %>
+          <% if page == @messages.current_page %>
+            <span class="current"><%= page %></span>
+          <% elsif (page - @messages.current_page).abs <= 2 || page == 1 || page == @messages.total_pages %>
+            <%= link_to page, messages_path(page: page) %>
+          <% elsif (page - @messages.current_page).abs == 3 %>
+            <span class="gap">…</span>
+          <% end %>
+        <% end %>
+
+        <% if @messages.next_page %>
+          <%= link_to "Next →", messages_path(page: @messages.next_page) %>
+        <% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="text-center py-8 text-gray-600">
+      <p class="text-lg">No messages yet.</p>
+      <p class="text-sm">Be the first to start the conversation!</p>
+    </div>
+  <% end %>
+</div>
+
+<!-- Auto-refresh script -->
+<script>
+  // Auto-refresh the page every 10 seconds to show new messages
+  setTimeout(function() {
+    window.location.reload();
+  }, 10000);
+
+  // Show loading indicator when submitting form
+  document.querySelector('form').addEventListener('submit', function() {
+    const submitBtn = this.querySelector('input[type="submit"]');
+    submitBtn.value = 'Sending...';
+    submitBtn.disabled = true;
+  });
+</script>

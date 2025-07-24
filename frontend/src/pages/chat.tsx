@@ -11,6 +11,14 @@ interface Message {
 
 const BACKEND_URL = 'http://localhost:3001';
 
+const api = axios.create({
+  baseURL: BACKEND_URL,
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  }
+});
+
 export default function Chat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
@@ -32,7 +40,7 @@ export default function Chat() {
     // Fetch existing messages
     const fetchMessages = async () => {
       try {
-        const response = await axios.get(`${BACKEND_URL}/messages`);
+        const response = await api.get('/messages');
         setMessages(response.data);
       } catch (error) {
         console.error('Error fetching messages:', error);
@@ -88,7 +96,7 @@ export default function Chat() {
     }
 
     try {
-      await axios.post(`${BACKEND_URL}/messages`, {
+      await api.post(`/messages`, {
         message: {
           content: newMessage,
           username: username

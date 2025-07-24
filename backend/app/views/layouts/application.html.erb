@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Rails Chat App</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-gray-100 min-h-screen">
+    <header class="header">
+      <div class="container">
+        <h1 class="text-2xl font-bold">Rails Live Chat</h1>
+        <p class="text-sm">Real-time messaging with Action Cable</p>
+      </div>
+    </header>
+
+    <main class="container">
+      <% if notice %>
+        <div class="alert alert-success">
+          <%= notice %>
+        </div>
+      <% end %>
+
+      <% if alert %>
+        <div class="alert alert-error">
+          <%= alert %>
+        </div>
+      <% end %>
+
+      <%= yield %>
+    </main>
+
+    <footer class="p-4 text-center text-gray-600 mt-8">
+      <p>&copy; 2025 Rails Chat App. Built with Rails <%= Rails.version %> and Action Cable.</p>
+    </footer>
+  </body>
+</html>

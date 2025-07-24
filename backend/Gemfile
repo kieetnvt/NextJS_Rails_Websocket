@@ -12,7 +12,22 @@ gem "pg", "~> 1.1"
 gem "puma", ">= 5.0"
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
-# gem "jbuilder"
+gem "jbuilder"
+
+# Use Tailwind CSS for styling
+gem "tailwindcss-rails"
+
+# Use Sprockets for asset pipeline
+gem "sprockets-rails"
+
+# Use importmap to manage JavaScript dependencies
+gem "importmap-rails"
+
+# Hotwire's SPA-like page accelerator
+gem "turbo-rails"
+
+# Hotwire's modest JavaScript framework
+gem "stimulus-rails"
 
 # Use Redis adapter to run Action Cable in production
 gem "redis", ">= 4.0.1"
@@ -34,6 +49,9 @@ gem "bootsnap", require: false
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
 gem "rack-cors"
+
+# Pagination
+gem "kaminari"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

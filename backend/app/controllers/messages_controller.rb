@@ -1,7 +1,16 @@
 class MessagesController < ApplicationController
   def index
-    @messages = Message.order(created_at: :asc)
-    render json: @messages
+    # Paginate messages for HTML view, order by most recent first for web interface
+    @messages = Message.order(created_at: :desc).page(params[:page]).per(10)
+    @message = Message.new # For the form
+
+    respond_to do |format|
+      format.html # Render HTML view with pagination
+      format.json {
+        # For JSON API, return all messages in chronological order
+        render json: Message.order(created_at: :asc)
+      }
+    end
   end
 
   def create
@@ -16,9 +25,25 @@ class MessagesController < ApplicationController
         created_at: @message.created_at
       })
 
-      render json: @message, status: :created
+      respond_to do |format|
+        format.html {
+          redirect_to messages_path, notice: 'Message sent successfully!'
+        }
+        format.json {
+          render json: @message, status: :created
+        }
+      end
     else
-      render json: @message.errors, status: :unprocessable_entity
+      respond_to do |format|
+        format.html {
+          # For HTML, paginate messages again and render with errors
+          @messages = Message.order(created_at: :desc).page(params[:page]).per(10)
+          render :index
+        }
+        format.json {
+          render json: @message.errors, status: :unprocessable_entity
+        }
+      end
     end
   end
 
