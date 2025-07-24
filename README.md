@@ -2,6 +2,19 @@
 
 A simple real-time chat application demonstrating WebSocket communication between a Next.js frontend and Rails backend using Action Cable.
 
+![NextJS Rails WebSocket Chat Application](demo.png)
+![NextJS Rails WebSocket Chat Application](demo_chat.png)
+
+## Overview
+
+This project demonstrates a real-time chat application built with Next.js and Rails, showcasing how to:
+
+- Establish WebSocket connections between a Next.js frontend and Rails backend
+- Implement Action Cable for real-time messaging
+- Handle connection state management
+- Persist messages in a PostgreSQL database
+- Style the application with Tailwind CSS
+
 ## Architecture
 
 - **Frontend**: Next.js with TypeScript, Tailwind CSS, and Page Router
@@ -70,7 +83,7 @@ A simple real-time chat application demonstrating WebSocket communication betwee
    ```
 
 ### Frontend Setup
-
+![alt text](image.png)
 1. Navigate to the frontend directory:
    ```bash
    cd frontend
